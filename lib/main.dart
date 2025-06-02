@@ -40,27 +40,48 @@ class _CounterPageState extends State<CounterPage> {
   int _maxLimit = 10; // 最大値の制限
   int _minLimit = -10; // 最小値の制限
   Color _numberColor = Colors.black; // 数字の色
+  int _dailyTotal = 0; // 1日の合計
+  DateTime _lastResetDate = DateTime.now(); // 最後にリセットした日付
+
+  // 日付が変わったかチェックする関数
+  void _checkDateChange() {
+    final now = DateTime.now();
+    if (now.year != _lastResetDate.year ||
+        now.month != _lastResetDate.month ||
+        now.day != _lastResetDate.day) {
+      // 日付が変わったら合計をリセット
+      setState(() {
+        _dailyTotal = 0;
+        _lastResetDate = now;
+      });
+    }
+  }
 
   // 7. 「＋」ボタンが押されたときに数字を1増やす関数
   void _increment() {
+    _checkDateChange(); // 日付チェック
     setState(() {
       if (_count < _maxLimit) { // 最大値未満の場合のみ増加
         _count++;
+        _dailyTotal++; // 合計を増やす
       }
     });
   }
 
   // 8. 「−」ボタンが押されたときに数字を1減らす関数
   void _decrement() {
+    _checkDateChange(); // 日付チェック
     setState(() {
       if (_count > _minLimit) { // 最小値より大きい場合のみ減少
         _count--;
+        _dailyTotal--; // 合計を減らす
       }
     });
   }
 
   // 9. リセットボタンが押されたときに数字を0に戻す関数
   void _reset() {
+    _checkDateChange(); // 日付チェック
     setState(() {
       _count = 0;
     });
@@ -101,6 +122,11 @@ class _CounterPageState extends State<CounterPage> {
             Text(
               '制限: $_minLimit 〜 $_maxLimit',
               style: const TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '今日の合計: $_dailyTotal',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             const Text(

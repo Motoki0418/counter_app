@@ -70,4 +70,35 @@ void main() {
     // -10以下には減らないことを確認
     expect(find.text('-10'), findsOneWidget);
   });
+
+  testWidgets('1日の合計が正しく計算される', (WidgetTester tester) async {
+    // 画面を表示
+    await tester.pumpWidget(const MyApp());
+
+    // 初期値は0
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('今日の合計: 0'), findsOneWidget);
+
+    // ＋ボタンを3回タップ
+    for (int i = 0; i < 3; i++) {
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump();
+    }
+    expect(find.text('3'), findsOneWidget);
+    expect(find.text('今日の合計: 3'), findsOneWidget);
+
+    // −ボタンを2回タップ
+    for (int i = 0; i < 2; i++) {
+      await tester.tap(find.byIcon(Icons.remove));
+      await tester.pump();
+    }
+    expect(find.text('1'), findsOneWidget);
+    expect(find.text('今日の合計: 1'), findsOneWidget);
+
+    // リセットボタンをタップ
+    await tester.tap(find.byIcon(Icons.refresh));
+    await tester.pump();
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('今日の合計: 1'), findsOneWidget); // 合計はリセットされない
+  });
 } 
