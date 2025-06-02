@@ -37,29 +37,35 @@ class CounterPage extends StatefulWidget {
 // 6. カウンター画面の「状態」を持つクラス
 class _CounterPageState extends State<CounterPage> {
   int _count = 0; // カウントする数字（最初は0）
+  int _maxLimit = 10; // 最大値の制限
+  int _minLimit = -10; // 最小値の制限
 
   // 7. 「＋」ボタンが押されたときに数字を1増やす関数
   void _increment() {
     setState(() {
-      _count++; // 数字を1増やす
+      if (_count < _maxLimit) { // 最大値未満の場合のみ増加
+        _count++;
+      }
     });
   }
 
-  // 追加：8. 「−」ボタンが押されたときに数字を1減らす関数
+  // 8. 「−」ボタンが押されたときに数字を1減らす関数
   void _decrement() {
     setState(() {
-      _count--; // 数字を1減らす
+      if (_count > _minLimit) { // 最小値より大きい場合のみ減少
+        _count--;
+      }
     });
   }
 
-  // 追加：9. リセットボタンが押されたときに数字を0に戻す関数
+  // 9. リセットボタンが押されたときに数字を0に戻す関数
   void _reset() {
     setState(() {
-      _count = 0; // 数字を0に戻す
+      _count = 0;
     });
   }
 
-  // 8. 画面の見た目を作る関数
+  // 10. 画面の見た目を作る関数
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,9 +73,19 @@ class _CounterPageState extends State<CounterPage> {
       appBar: AppBar(title: const Text('カウンターアプリ')),
       // 11. 画面の真ん中に数字を大きく表示
       body: Center(
-        child: Text(
-          '$_count', // 今の数字を表示
-          style: const TextStyle(fontSize: 48),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$_count', // 今の数字を表示
+              style: const TextStyle(fontSize: 48),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              '制限: $_minLimit 〜 $_maxLimit',
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          ],
         ),
       ),
       // 12. 右下に「＋」「−」「リセット」ボタンを縦に並べて表示
