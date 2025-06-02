@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-// import 'dart:io';
+
+
 
 // 1. アプリのスタート地点（main関数）
 // ここからアプリが始まる
