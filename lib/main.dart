@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-
-
 
 // 1. アプリのスタート地点（main関数）
 // ここからアプリが始まる
@@ -55,20 +52,27 @@ class _CounterPageState extends State<CounterPage> {
     });
   }
 
+  // 追加：9. リセットボタンが押されたときに数字を0に戻す関数
+  void _reset() {
+    setState(() {
+      _count = 0; // 数字を0に戻す
+    });
+  }
+
   // 8. 画面の見た目を作る関数
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 9. 上のバー（タイトル）
+      // 10. 上のバー（タイトル）
       appBar: AppBar(title: const Text('カウンターアプリ')),
-      // 10. 画面の真ん中に数字を大きく表示
+      // 11. 画面の真ん中に数字を大きく表示
       body: Center(
         child: Text(
           '$_count', // 今の数字を表示
           style: const TextStyle(fontSize: 48),
         ),
       ),
-      // 11. 右下に「＋」ボタンと「−」ボタンを縦に並べて表示
+      // 12. 右下に「＋」「−」「リセット」ボタンを縦に並べて表示
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -80,6 +84,12 @@ class _CounterPageState extends State<CounterPage> {
           FloatingActionButton(
             onPressed: _decrement, // ボタンが押されたら_decrementを実行
             child: const Icon(Icons.remove), // マイナスのアイコン
+          ),
+          const SizedBox(height: 12), // ボタン同士の間隔
+          FloatingActionButton(
+            onPressed: _reset, // ボタンが押されたら_resetを実行
+            backgroundColor: Colors.red, // リセットボタンは赤色に
+            child: const Icon(Icons.refresh), // リフレッシュアイコン
           ),
         ],
       ),
