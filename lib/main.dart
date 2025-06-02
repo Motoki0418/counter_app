@@ -39,6 +39,7 @@ class _CounterPageState extends State<CounterPage> {
   int _count = 0; // カウントする数字（最初は0）
   int _maxLimit = 10; // 最大値の制限
   int _minLimit = -10; // 最小値の制限
+  Color _numberColor = Colors.black; // 数字の色
 
   // 7. 「＋」ボタンが押されたときに数字を1増やす関数
   void _increment() {
@@ -65,6 +66,19 @@ class _CounterPageState extends State<CounterPage> {
     });
   }
 
+  // 色を変更する関数
+  void _changeColor() {
+    setState(() {
+      // ランダムな色を生成
+      _numberColor = Color.fromRGBO(
+        (DateTime.now().millisecondsSinceEpoch % 255).toInt(),
+        (DateTime.now().microsecondsSinceEpoch % 255).toInt(),
+        (DateTime.now().microsecondsSinceEpoch % 255).toInt(),
+        1,
+      );
+    });
+  }
+
   // 10. 画面の見た目を作る関数
   @override
   Widget build(BuildContext context) {
@@ -76,14 +90,22 @@ class _CounterPageState extends State<CounterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              '$_count', // 今の数字を表示
-              style: const TextStyle(fontSize: 48),
+            GestureDetector(
+              onTap: _changeColor, // タップで色を変更
+              child: Text(
+                '$_count', // 今の数字を表示
+                style: TextStyle(fontSize: 48, color: _numberColor),
+              ),
             ),
             const SizedBox(height: 20),
             Text(
               '制限: $_minLimit 〜 $_maxLimit',
               style: const TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              '数字をタップすると色が変わります',
+              style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
           ],
         ),
